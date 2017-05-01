@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MoopMap>
+  <!-- General information -->
+  <version>1.0</version>
+  <year>2016</year>
+  <!-- Define type and name of input file with MOOP data -->
+  <Data>
+    <type>picture</type>
+    <file>../data/Moop-Map_Day-9_Placement-Updated_hi-res.jpg</file>
+  </Data>
+  <!-- Define 2 points of reference from picture to MOOP reference frame -->
+  <ReferenceFrame>
+    <pixelPositionCenterMap x="4501" y="4714" />
+    <!-- Use as other reference point intersection of L@2:00 -->
+    <pixelPositionOnMap x="7251" y="3123" radius="5590" hours="2" minutes="0" />
+  </ReferenceFrame>
+  <!-- Set fiducial region for this map -->
+  <FiducialRegion>
+    <radius min="2500" max="5600" />
+    <angle hoursMin="1" minutesMin="59" hoursMax="10" minutesMax="1" /> 
+    <excludeCircle centerRadius="2900" centerHours="6" centerMinutes="0" circleRadius="740" />
+  </FiducialRegion>
+  <!-- Set location of all round streets (Esp., A-L) -->
+  <RoundStreetsLocation>
+    <street name="Esp" radius="2510" />
+    <street name="A" radius="2950.0" />
+    <street name="B" radius="3190.0" />
+    <street name="C" radius="3430.0" />
+    <street name="D" radius="3670.0" />
+    <street name="E" radius="3910.0" />
+    <street name="F" radius="4150.0" />
+    <street name="G" radius="4390.0" />
+    <street name="H" radius="4630.0" />
+    <street name="I" radius="4870.0" />
+    <street name="J" radius="5110.0" />
+    <street name="K" radius="5350.0" />
+    <street name="L" radius="5590.0" />
+  </RoundStreetsLocation>
+  <!-- Set list of forbidden (non-existent) intersections among all possible round (Esp., A-L) roads
+       and radial roads every 15minutes.
+       Two xml tag possible, for single and range of intersections respectively:
+       <intersection round= radialHours= radialMinutes= />
+       <intersectionRadialRange minRound= maxRound= radialHours= radialMinutes= /> -->  
+  <ForbiddenIntersections>
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="2" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="2" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="3" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="3" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="4" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="4" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="5" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="5" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="6" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="6" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="7" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="7" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="8" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="8" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="9" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="9" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="9" radialMinutes="45" />
+    <intersection round="Esp" radialHours="6" radialMinutes="0" />
+    <intersection round="A" radialHours="6" radialMinutes="0" />
+    <intersection round="B" radialHours="6" radialMinutes="0" />
+    <intersection round="C" radialHours="6" radialMinutes="0" />
+  </ForbiddenIntersections>
+</MoopMap>

@@ -1,0 +1,97 @@
+\documentclass{article}
+
+\begin{document}
+\section{Introduction and definitions}
+
+We assume for simplicity only two moop values, $m=\{0,1\}$. 
+These can be set to any combination of {\sc GREEN}, {\sc YELLOW} or {\sc RED}.
+We define as $p_m(m)$ the probability of having a MOOP value $m$. 
+This can be computed from the MOOP map assuming a population that is proportional to the geografic area. 
+
+We assume only two categories, $y=\{0,1\}$, of population.
+These could be for instance being at the first burn ($y=0$) or having being there before at least once ($y=1$).
+We define $p_y(y)$ the probability of a given individual to be in the population category $y$.
+This is derived from the standard census data analysis.
+
+The population of individuals is distributed on the territory such that each individual is in principle
+associated to a category $y$ and a MOOP value $m$ based on its true position $x_{\rm true}$.
+
+We are interested in studying the possible correlation between the variables $m$ and $y$ across the population,
+that is if the probability of an individual to be associated to a MOOP value $m$ depends on the category $y$, 
+or in other words whether $p(m | y) = p(m)$ or not.
+
+We define for simplicity a ``MOOP asymmetry'' as:
+\begin{equation}
+\label{eq:moopasym}
+a \equiv 2\cdot \frac{p(m=1 | y=0) - p(m=1 | y=1)}{p(m=1 | y=0) + p(m=1 | y=1)}
+\end{equation}
+ which quantifies how more likely is an individual of category $m=1$ to also be in category $y=0$ rather than $y=1$.
+In the example above, this would correspond to the difference of probability to produce MOOP ($m=1$) for a new-burner ($y=0$)
+and an experienced one ($y=1$), divided by its average. An asymmetry value of $0$ would indicate that 
+virgin and experienced burners have the same probability to produce MOOP, for instance.
+
+\section{Toy generation}
+The aim is to generate a random population of individuals that are distributed randomly on the places of the MOOP map
+that are allowable for camping.
+The population shall respect the constraints given by $p_y$ and $p_m$ and is generated such that it will have some
+amount of correlation between the $m$ and $y$ variables in the population given by the aymmetry $a$, as defined in equation \ref{eq:moopasym}.
+
+We generate toys to study the performance of a given algorithm and how much external factors (e.g. biases, measurement uncertainties)
+influence the significance of the result. 
+For each toy ``experiment'' we generate a full population of a given number of individuals.
+For each individual we:
+\begin{itemize}
+\item generate a true position that is fiducial to the available area for camping
+\item smear the true position through a given algorithm to emulate accuracy in the measurements
+\item assign a category $y$, based on the conditional probability $p(y | m_{\rm true})$, where $m_{\rm true}$ is the true value of $m$ at the generated true position (before smearing)
+\end{itemize}
+
+The true position is trivially generated in a way that the probability of finding an individual in an area $dx\cdot dy$ is constant within the fiducial area.
+The fiducial area is defined as the area available for camping.
+
+The smearing can be done in different ways. Three possibilities that are well motivated include:
+\begin{itemize}
+\item[No smearing] Useful mostly for studying how other variables affect sensitivity.
+\item[Gaus] Gaussian smearing around the true value with a given standard deviation.
+\item[Glue] Each psition is collapsed to the closest intersection. Some uncertainty can be added to emulate mistakes in filling this information.
+\end{itemize}
+
+The value of $p(y | m)$ needed to assign a category for any given generated individual can be calculated from the asymmetry $a$, and the overall
+probabilities $p_m(m)$ and $p_y(y)$. 
+The calculation can be carried out using Bayes theorem to express:
+\begin{equation}
+\label{eq:bayes}
+p(y | m) = p(m | y)\cdot p_y(y) / p_m(m)
+\end{equation}
+the values of $p(m | y)$ can be extracted using the fact that $\sum_y p(m | y)\cdot p(y) = \sum_y p(y | m)\cdot p(m) = p(m)$, which simply
+uses Bayes theorem again and unitarity, i.e. $\sum_y p(y | m) = 1$.
+For the case of $m=1$ (used to define the asymmetry), and calling $p(m=m_0 | y=y_0)\equiv p_{m_0y_0}$ for brevity, we have the 
+following relationships:
+\begin{eqnarray}
+p_{10}p_y(0) + p_{11}p_y(1) & = & p_m(1) \\
+\frac{p_{11}}{p_{10}} & = & \frac{2-a}{a+2} \equiv A \\
+\end{eqnarray}
+where the second one comes straight from the asymmetry definition of equation \ref{eq:moopasym}.
+We also defined the useful symbol $A$, which relates the ratio $p(m=1|y=1) / p(m=1|y=0)$, as alternative interpretation of the asymmetry
+\footnote{While in intuitive terms this seems a more natural definition, the definition of $a$ is slightly preferred, since non-small deviation influence $A$ in the same way on both sides, while large variations of $a$ leads to values in the asymmetric ranges $[0,1]$ and $[1,\inf]$. The two can easily be converted to each other at any time though.}.
+These, plus unitarity, leads to the determination of:
+\begin{eqnarray}
+p(m=1 | y=0) &=& \frac{p_m(1)}{p_y(0) + A\cdot p_y(1)} \\
+p(m=1 | y=1) &=& \frac{p_m(1)}{p_y(0)/A + p_y(1)} \\
+p(m=0 | y=0) &=& 1-p(m=1 | y=0)) \\
+p(m=0 | y=1) &=& 1-p(m=1 | y=1)) \\
+\end{eqnarray}
+
+We can therefore finally write the needed probability expressions combining the above equations with eq.~\ref{eq:bayes}:
+\begin{eqnarray}
+p(y=1 | m=1) = \frac{p_y(1)}{p_y(0)/A + p_y(1)} \\
+p(y=0 | m=1) = \frac{p_y(0)}{p_y(0) + A\cdot p_y(1)} \\
+p(y=0 | m=0) = \frac{p_y(0)}{p_m(0)}\left(1- \frac{p_m(1)}{p_y(0)+A\cdot p_y(1)}\right) \\
+p(y=1 | m=0) = \frac{p_y(1)}{p_m(0)}\left(1- \frac{p_m(1)}{p_y(0)/A+p_y(1)}\right) \\
+\end{eqnarray}
+\noindent
+with $A = \frac{2-a}{a+2}$.
+
+In practical terms we, only need two of them (e.g. $p(y=0 | m=1)$ and $p(y=0 | m=0)$ to generate a random number and decide for each individual of class $m$ what category $y$ to assign.
+
+\end{document}
