@@ -20,10 +20,12 @@ Census data only available to Census team.
 # Installation
 
 Quick start guide after all dependencies are met and the repository has been cloned.
+```
 $ mkdir build
 $ cd build
 $ cmake ../
 $ make
+```
 
 All executables and libraries will appear in the `build` directory.
 
@@ -48,7 +50,7 @@ This code include tools to perform various steps of the analysis, in particular 
 * Analyze data and extract correlations (only binary categories supported so far)
 
 ## Digitize MOOP map data
-The information on each MOOP map is summarized in an XML file (see data/MoopMap-2016.xml for an example).
+The information on each MOOP map is summarized in an XML file (see `data/MoopMap-2016.xml` for an example).
 The actual data is then loaded from an image that is referenced in the XML file itself.
 Two reference points are needed to translate the image positions (pixels) in an absolute scale (radius and angle, see inc/MoopMap.h for a description of the reference frame).
 
