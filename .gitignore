@@ -27,3 +27,17 @@
 *.exe
 *.out
 *.app
+
+# Text editor backup files
+*~
+
+# Working directories
+results/
+scratch/
+build/
+
+# Data
+data/*.jpg
+
+# Internal stuff
+doc/internal
