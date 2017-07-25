@@ -16,7 +16,7 @@
   </ReferenceFrame>
   <!-- Set fiducial region for this map -->
   <FiducialRegion>
-    <radius min="2500" max="5600" />
+    <radius min="2725" max="5600" /> <!-- Exclude Esplanade (@2500) until half-way through A (@2950) -->
     <angle hoursMin="1" minutesMin="59" hoursMax="10" minutesMax="1" /> 
     <excludeCircle centerRadius="2900" centerHours="6" centerMinutes="0" circleRadius="740" />
   </FiducialRegion>
@@ -40,25 +40,29 @@
        and radial roads every 15minutes.
        Two xml tag possible, for single and range of intersections respectively:
        <intersection round= radialHours= radialMinutes= />
-       <intersectionRadialRange minRound= maxRound= radialHours= radialMinutes= /> -->  
-  <ForbiddenIntersections>
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="2" radialMinutes="15" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="2" radialMinutes="45" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="3" radialMinutes="15" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="3" radialMinutes="45" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="4" radialMinutes="15" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="4" radialMinutes="45" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="5" radialMinutes="15" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="5" radialMinutes="45" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="6" radialMinutes="15" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="6" radialMinutes="45" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="7" radialMinutes="15" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="7" radialMinutes="45" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="8" radialMinutes="15" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="8" radialMinutes="45" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="9" radialMinutes="15" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="9" radialMinutes="45" />
-    <intersectionRadialRange minRound="Esp" maxRound="F" radialHours="9" radialMinutes="45" />
+       <intersectionRadialRange minRound= maxRound= radialHours= radialMinutes= /> 
+
+       Note: excluding Esplanade intersections too since they are not in the allowed region.
+             Also excluding all ":15" and ":45" street intersections since they are not in the survey
+  -->  
+  <ForbiddenIntersections>    
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="2" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="2" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="3" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="3" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="4" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="4" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="5" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="5" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="6" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="6" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="7" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="7" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="8" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="8" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="9" radialMinutes="15" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="9" radialMinutes="45" />
+    <intersectionRadialRange minRound="Esp" maxRound="L" radialHours="9" radialMinutes="45" />
     <intersection round="Esp" radialHours="6" radialMinutes="0" />
     <intersection round="A" radialHours="6" radialMinutes="0" />
     <intersection round="B" radialHours="6" radialMinutes="0" />

@@ -11,6 +11,8 @@ int getMOOPBinCategory(int moopValue)
 {
   if (moopValue == MoopMap::MOOP_GREEN) return 0;
   else if ((moopValue == MoopMap::MOOP_YELLOW) or (moopValue == MoopMap::MOOP_RED)) return 1;
+  //if ((moopValue == MoopMap::MOOP_GREEN) or (moopValue == MoopMap::MOOP_YELLOW)) return 0;
+  //else if (moopValue == MoopMap::MOOP_RED) return 1;
   return -1;
 }
 

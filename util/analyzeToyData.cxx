@@ -125,7 +125,7 @@ int main(int argc, char **argv) {
   inputFile = argv[optind];
 
   //Init ROOT app
-  TApplication theApp("checkMap", &argc, argv);
+  TApplication theApp("analyzeToyData", &argc, argv);
 
   //Open input file and get meta-data
   std::cout << "Opening input file" << std::endl;

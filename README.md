@@ -17,8 +17,6 @@ The MOOP maps can be downloaded here:
 
 Census data only available to Census team.
 
-# Installation
-
 Quick start guide after all dependencies are met and the repository has been cloned.
 ```
 $ mkdir build
@@ -46,7 +44,7 @@ A quick guid to the code structure:
 
 This code include tools to perform various steps of the analysis, in particular to:
 * Digitize and validate MOOP map data
-* Test correlation extraction algorithm on fake (toy) data
+* Test correlation extraction algorithm on fake (toy) data (also used to estimate statistical uncertainties)
 * Analyze data and extract correlations (only binary categories supported so far)
 
 ## Digitize MOOP map data
@@ -66,12 +64,8 @@ Toy data can be generated using the `generateToys` executable. Invoking `generat
 
 ## Analyze data
 To analyze toy data it is convenient to use the `analyzeToyData` executable.
-The macro `macros/drawToyResults.C` can be helpful to plot the response for various input asymmetries and determine the sensitivity.
+The macro `macros/drawToyResults.C` can be helpful to plot the response for various input asymmetries and determine the sensitivity as well as the expected statistical uncertainty of a given estimation.
 
-To analyze real data, it first has to be transformed into a ROOT readable file, using
-Then data can be analyzed using
-
-
-
-
+To analyze real data, it first has to be transformed into a ROOT readable file, using `parseCensusCSV.R`.
+Then data can be analyzed using the `analyzeCensusData` executable.
 

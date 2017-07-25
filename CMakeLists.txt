@@ -8,7 +8,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
 #Enable debug build 
 # alternative from command-line:
 # cmake -DCMAKE_BUILD_TYPE=debug
-#set(CMAKE_BUILD_TYPE debug)
+set(CMAKE_BUILD_TYPE debug)
 #set(ROOT_CONFIG_DEBUG 1)
 
 ### Setup dependencies
@@ -61,7 +61,10 @@ target_link_libraries(checkMap MoopMap)
 add_executable(analyzeToyData util/analyzeToyData.cxx)
 target_link_libraries(analyzeToyData MoopMap MoopAnalyzer)
 
-install (TARGETS generateToys checkMap DESTINATION bin)
+add_executable(analyzeCensusData util/analyzeCensusData.cxx)
+target_link_libraries(analyzeCensusData MoopMap MoopAnalyzer)
+
+install (TARGETS generateToys checkMap analyzeCensusData DESTINATION bin)
 
 ### Documentation
 #add_latex_document(

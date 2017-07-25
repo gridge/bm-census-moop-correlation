@@ -213,6 +213,7 @@ analysisOutput_t MoopDataAnalyzer::getResults()
     std::vector<float> aErrDn_i;
     DBG("Results per interaction:");
     for (auto i : map->getListOfIntersections()) {
+      DBG("Processing " << map->getStrIntersection(i));
       float pm0_i = 0.0;
       float pm1_i = 0.0;
       float py1_i = 0.0;
@@ -232,53 +233,70 @@ analysisOutput_t MoopDataAnalyzer::getResults()
 	  area_m1 += moopAreas[i];
       pm1_i = area_m1 / (area_m0 + area_m1);
       pm0_i = 1 - pm1_i;
+      DBG(" pm0_i=" << pm0_i);
       auto popByInt = m_populationByIntersection[i];      
-      calculateEfficiency(py0_i, py0_i_errUp, py0_i_errDn, popByInt[0], popByInt[0]+popByInt[1]);
-      calculateEfficiency(py1_i, py1_i_errUp, py1_i_errDn, popByInt[1], popByInt[0]+popByInt[1]);
+      DBG(" population y0=" << popByInt[0] << ", y1=" << popByInt[1]);
+      float p10 = 0.5;
+      float p11 = 0.5;
+      float p10ErrUp = 100;
+      float p10ErrDn = 100;
+      float p11ErrUp = 100;
+      float p11ErrDn = 100;
+      if (popByInt[0]+popByInt[1] > 0) {
+	calculateEfficiency(py0_i, py0_i_errUp, py0_i_errDn, popByInt[0], popByInt[0]+popByInt[1]);
+	DBG(" py0 = " << py0_i << " +" << py0_i_errUp << " -" << py0_i_errDn); 
+	calculateEfficiency(py1_i, py1_i_errUp, py1_i_errDn, popByInt[1], popByInt[0]+popByInt[1]);
+	DBG(" py1 = " << py1_i << " +" << py1_i_errUp << " -" << py1_i_errDn); 
+	//calculate probabilities, asymmetry and uncertainties
+	p10 = (py0_i / py0 - pm0_i / pm0) / (pm1_i / pm1 - pm0_i / pm0); 
+	p10ErrUp = (py0_i_errUp / py0) / (pm1_i / pm1 - pm0_i / pm0);
+	p10ErrDn = (py0_i_errDn / py0) / (pm1_i / pm1 - pm0_i / pm0);      
+	p10_i.push_back(p10);      
+	p10ErrUp_i.push_back(p10ErrUp);
+	p10ErrDn_i.push_back(p10ErrDn);
+	p11 = (py1_i / py1 - pm0_i / pm0) / (pm1_i / pm1 - pm0_i / pm0); 
+	p11ErrUp = (py1_i_errUp / py1) / (pm1_i / pm1 - pm0_i / pm0);
+	p11ErrDn = (py1_i_errDn / py1) / (pm1_i / pm1 - pm0_i / pm0);
+	p11_i.push_back(p11);
+	p11ErrUp_i.push_back(p11ErrUp);
+	p11ErrDn_i.push_back(p11ErrDn);
+      } else {
+	DBG("No population for this intersection. Returning flat prior");	
+      }
 
-      //calculate probabilities, asymmetry and uncertainties
-      float p10 = (py0_i / py0 - pm0_i / pm0) / (pm1_i / pm1 - pm0_i / pm0); 
-      float p10ErrUp = (py0_i_errUp / py0) / (pm1_i / pm1 - pm0_i / pm0);
-      float p10ErrDn = (py0_i_errDn / py0) / (pm1_i / pm1 - pm0_i / pm0);      
-      p10_i.push_back(p10);      
-      p10ErrUp_i.push_back(p10ErrUp);
-      p10ErrDn_i.push_back(p10ErrDn);
+      //calculate posteriors
       TF1* p10_pdf = new TF1((TString("p10_pdf_")+p10_i.size()).Data(), "TMath::BetaDist(x,[0],[1])",0.0, 1.0);
       p10_pdf->SetParameter(0, 1.0+popByInt[0]); //@TODO does not account for possible weights, OK for now
       p10_pdf->SetParameter(1, 1.0+popByInt[1]);
       p10_posterior_i.push_back(p10_pdf);
       p10_posterior_i_pars.push_back(std::make_pair<float,float>(1.0 / (py0 * ( pm1_i / pm1 - pm0_i / pm0 )), -1.0*(pm0_i / pm0) / (pm1_i / pm1 - pm0_i / pm0) ));
-//      #ifdef DEBUG_BUILD
+      DBG(" p10 = " << p10 << " +" << p10ErrUp << " -" << p10ErrDn);
+//#ifdef DEBUG_BUILD
 //      c->cd(1);
 //      p10_pdf->Draw();
-//      #endif
-
-      float p11 = (py1_i / py1 - pm0_i / pm0) / (pm1_i / pm1 - pm0_i / pm0); 
-      float p11ErrUp = (py1_i_errUp / py1) / (pm1_i / pm1 - pm0_i / pm0);
-      float p11ErrDn = (py1_i_errDn / py1) / (pm1_i / pm1 - pm0_i / pm0);
-      p11_i.push_back(p11);
-      p11ErrUp_i.push_back(p11ErrUp);
-      p11ErrDn_i.push_back(p11ErrDn);
+//#endif
       TF1* p11_pdf = new TF1((TString("p11_pdf_")+p11_i.size()).Data(), "TMath::BetaDist(x,[0],[1])",0.0, 1.0);
       p11_pdf->SetParameter(0, 1.0+popByInt[1]); //@TODO does not account for possible weights, OK for now
       p11_pdf->SetParameter(1, 1.0+popByInt[0]);
       p11_posterior_i.push_back(p11_pdf);
       p11_posterior_i_pars.push_back(std::make_pair<float,float>(1.0 / (py1 * ( pm1_i / pm1 - pm0_i / pm0 )), -1.0*(pm0_i / pm0) / (pm1_i / pm1 - pm0_i / pm0) ));
-//      #ifdef DEBUG_BUILD
+      DBG(" p11 = " << p11 << " +" << p11ErrUp << " -" << p11ErrDn);
+//#ifdef DEBUG_BUILD
 //      c->cd(2);
 //      p11_pdf->Draw();
-//      #endif
+//#endif
 
+      //deriving asymmetry for intersection
       float a = 2 * (p10 - p11) / (p10 + p11);
       float aErrUp = 4 * TMath::Sqrt( (TMath::Power(p11*p10ErrUp,2) + TMath::Power(p10*p11ErrUp,2)) ) / (TMath::Power(p11+p10,2));
       float aErrDn = 4 * TMath::Sqrt( (TMath::Power(p11*p10ErrDn,2) + TMath::Power(p10*p11ErrDn,2)) ) / (TMath::Power(p11+p10,2));
       a_i.push_back(a);
       aErrUp_i.push_back(aErrUp);
       aErrDn_i.push_back(aErrDn);
-      DBG("pm0_i=" << pm0_i << " p10 = " << p10 << "(+-" << p10ErrUp << ","<<p10ErrDn << "), p11 = " << p11 << "(+-" << p11ErrUp << ","<<p11ErrDn << "), a = " << a << "(+-" << aErrUp << ","<< aErrDn << ")");      
-      //      #ifdef DEBUG_BUILD
-      //c->WaitPrimitive();
-      //      #endif
+      DBG("a = " << a << " +" << aErrUp << " -"<< aErrDn);      
+//#ifdef DEBUG_BUILD
+//      c->WaitPrimitive();
+//#endif
     } //end loop over intersections
 
     // Perform combination of likelihoods for extracting probabilities
@@ -432,10 +450,11 @@ bool MoopDataAnalyzer::calculateProbSlow(float &prob, float &probErrUp, float &p
   Double_t minXLL=0.0;
   prob = prob_pdf->GetMinimumX();
   double minLL = prob_pdf->Eval(prob);
-  q[0] = prob_pdf->GetX(minLL+0.5);
-  q[1] = prob_pdf->GetX(minLL+0.5, prob);
+  q[0] = prob_pdf->GetX(minLL+0.5, 0.0, prob);
+  q[1] = prob_pdf->GetX(minLL+0.5, prob, 1.0);
   probErrDn = prob - q[0];
   probErrUp = q[1] - prob;
+  DBG("prob=" << prob << " +" << probErrUp << " -" << probErrDn << "(q0=" << q[0] << ", q1=" << q[1] <<")");
 #ifdef DEBUG_BUILD
   TCanvas *c = new TCanvas();
   prob_pdf->Draw();
