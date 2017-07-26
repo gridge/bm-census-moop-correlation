@@ -171,7 +171,8 @@ int main(int argc, char **argv) {
     mca->radiusForMoopAlg = toySettings.smearingParameter;
   } else if (toySettings.smearing == 2) {
     //mca->probEvalAlg = MoopDataAnalyzer::probFromLikelihood;
-    mca->probEvalAlg = MoopDataAnalyzer::probFromPopAsym; //use fast method for toys
+    //mca->probEvalAlg = MoopDataAnalyzer::probFromPopAsym; //use fast method for toys
+    mca->probEvalAlg = MoopDataAnalyzer::probFromPopAsymSlow; //test:use accurate method
     mca->moopEvalAlg = MoopDataAnalyzer::moopFromIntersection;
   }
   
@@ -252,7 +253,7 @@ int main(int argc, char **argv) {
 	  mca->fill(data.nPrevBurns, pos, true); //use prior-correction
 	  //DBG("trueMOOP: " << data.trueMOOP << ", m-category = " << getMOOPBinCategory(data.trueMOOP));
 	} catch (int e) {
-	  if (e == MoopDataAnalyzer::ERROR_INVALID_MOOP) {
+	  if ((e == MoopDataAnalyzer::ERROR_INVALID_MOOP) or (e == MoopDataAnalyzer::ERROR_POS_NOT_FIDUCIAL)) {
 	    //can happen in some cases, keep track for stat reasons
 	    invalidMoopData++;
 	  } else {

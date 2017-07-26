@@ -16,7 +16,7 @@
   </ReferenceFrame>
   <!-- Set fiducial region for this map -->
   <FiducialRegion>
-    <radius min="2725" max="5600" /> <!-- Exclude Esplanade (@2500) until half-way through A (@2950) -->
+    <radius min="2731" max="5600" /> <!-- Exclude Esplanade (@2510) until half-way(+1) through A (@2950) -->
     <angle hoursMin="1" minutesMin="59" hoursMax="10" minutesMax="1" /> 
     <excludeCircle centerRadius="2900" centerHours="6" centerMinutes="0" circleRadius="740" />
   </FiducialRegion>

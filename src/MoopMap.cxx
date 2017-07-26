@@ -307,7 +307,8 @@ TVector2 MoopMap::getIntersectionPosition(streetIntersection_t intersection)
 
 void MoopMap::addForbiddenIntersection(streetIntersection_t intersection)
 {
-  m_forbiddenIntersections.push_back(intersection);
+  if (not isIntersectionForbidden(intersection)) //check if not already forbidden
+    m_forbiddenIntersections.push_back(intersection);
 }
 
 void MoopMap::clearForbiddenIntersections()

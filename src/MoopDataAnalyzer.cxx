@@ -70,12 +70,12 @@ void MoopDataAnalyzer::fill(int y, TVector2 pos, bool usePriorAsymmetry)
 {
   //DBG("MCA: Filling info for position (r,phi)=" << pos.Mod() << ", " << pos.Phi() << "), y-category = " << y);
   //get moop values from position
+  if (not map->isFiducial(pos)) throw ERROR_POS_NOT_FIDUCIAL;
   std::map<int, float> moopAreas;
   MoopMap::streetIntersection_t intersection;
   if (moopEvalAlg == moopFromIntersection) {    
-    intersection = map->getClosestIntersection(pos);
+    intersection = map->getClosestIntersection(pos);    
     moopAreas = map->getMoopAreaNearIntersection(intersection, 10.0);
-    m_populationByIntersection[intersection][y] += 1; //increment population
   } else if (moopEvalAlg == moopFromPosition) {
     int moopVal = map->getValue(pos);
     moopAreas[moopVal] = 1; //arbitrary constant value
@@ -150,6 +150,9 @@ void MoopDataAnalyzer::fill(int y, TVector2 pos, bool usePriorAsymmetry)
   results.population++;
   if (y == 0) results.y0Population++;
   else if (y==1) results.y1Population++;
+  if (moopEvalAlg == moopFromIntersection) {    
+    m_populationByIntersection[intersection][y] += 1; //increment population
+  }
 }
 
 analysisOutput_t MoopDataAnalyzer::getResults()

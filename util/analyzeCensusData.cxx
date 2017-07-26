@@ -155,10 +155,22 @@ int main(int argc, char **argv) {
     if (moopMap->isIntersectionForbidden(moopMap->getIntersection(roundStreet, radialStreet)))
       continue; //entry not valid
     pos = moopMap->getIntersectionPosition(roundStreet, radialStreet);
+    if (not moopMap->isFiducial(pos))
+      continue; //entry outside fiducial area
     int nBurns;
     if (virgin_bool == 1) nBurns = 0;
     else nBurns = 1;
-    mca->fill(nBurns, pos);
+    try {
+      mca->fill(nBurns, pos);
+    } catch (int e) {
+      if ((e == MoopDataAnalyzer::ERROR_INVALID_MOOP) or (e == MoopDataAnalyzer::ERROR_POS_NOT_FIDUCIAL)) {
+	//can happen in some cases, not fatal (data won't be counted
+      } else {
+	//non-tolerable error
+	std::cerr << "Unexpected exception thrown: " << e << ". Continuing." << std::endl;
+	continue;
+      }
+    }
   }
 
   std::cout << "Finished analyzing data." << std::endl;

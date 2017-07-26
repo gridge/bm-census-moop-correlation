@@ -136,7 +136,8 @@ class MoopDataAnalyzer {
   // Error codes
 
   static const int ERROR_INVALID_ALG = 1;
-  static const int ERROR_INVALID_MOOP = 1;
+  static const int ERROR_INVALID_MOOP = 2;
+  static const int ERROR_POS_NOT_FIDUCIAL = 3;
 
 };
 

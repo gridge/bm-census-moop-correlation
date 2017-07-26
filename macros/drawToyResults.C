@@ -1,14 +1,15 @@
 void drawToyResults(TString inputFiles) {  
 
   std::vector<TString> inputResultsFiles;
-  inputResultsFiles.push_back(TString("ana_pop_toys_2016_5k_GlueSmear_A0p0.root"));
-  inputResultsFiles.push_back(TString("ana_pop_toys_2016_5k_GlueSmear_A0p1.root"));
-  inputResultsFiles.push_back(TString("ana_pop_toys_2016_5k_GlueSmear_A0p5.root"));
-  inputResultsFiles.push_back(TString("ana_pop_toys_2016_5k_GlueSmear_A1p0.root"));
-  inputResultsFiles.push_back(TString("ana_pop_toys_2016_5k_GlueSmear_A1p5.root"));
-  inputResultsFiles.push_back(TString("ana_pop_toys_2016_5k_GlueSmear_A2p0.root"));
-  inputResultsFiles.push_back(TString("ana_pop_toys_2016_5k_GlueSmear_Am0p5.root"));
-  inputResultsFiles.push_back(TString("ana_pop_toys_2016_5k_GlueSmear_Am1p0.root"));
+  inputResultsFiles.push_back(TString("ana_pop_toys_2016_virgin_GlueSmear_A0p0.root"));
+  inputResultsFiles.push_back(TString("ana_pop_toys_2016_virgin_GlueSmear_A0p1.root"));
+  inputResultsFiles.push_back(TString("ana_pop_toys_2016_virgin_GlueSmear_A0p5.root"));
+  inputResultsFiles.push_back(TString("ana_pop_toys_2016_virgin_GlueSmear_A1p0.root"));
+  inputResultsFiles.push_back(TString("ana_pop_toys_2016_virgin_GlueSmear_A1p5.root"));
+  inputResultsFiles.push_back(TString("ana_pop_toys_2016_virgin_GlueSmear_Am0p1.root"));
+  inputResultsFiles.push_back(TString("ana_pop_toys_2016_virgin_GlueSmear_Am0p5.root"));
+  inputResultsFiles.push_back(TString("ana_pop_toys_2016_virgin_GlueSmear_Am1p0.root"));
+  inputResultsFiles.push_back(TString("ana_pop_toys_2016_virgin_GlueSmear_Am1p5.root"));
 
   TGraphErrors *g_response = new TGraphErrors();
   TGraphErrors *g_pull = new TGraphErrors();
