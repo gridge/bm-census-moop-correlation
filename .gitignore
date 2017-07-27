@@ -38,7 +38,9 @@ build/
 
 # Data
 data/*.jpg
-data/*
+data/*.csv
+data/*.tsv
+data/filteredData/*.tsv
 
 # Internal stuff
 doc/internal
