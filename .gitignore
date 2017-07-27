@@ -41,6 +41,9 @@ data/*.jpg
 data/*.csv
 data/*.tsv
 data/filteredData/*.tsv
+data/*.txt
+data/*.zip
+data/*.pdf
 
 # Internal stuff
 doc/internal
