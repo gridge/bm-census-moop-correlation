@@ -279,6 +279,7 @@ int main(int argc, char **argv) {
     if (result.invalidMoopData > 0) errorsResultCalc++;
     result.aTrue = toySettings.asymmetryVirgins;
     DBG("Asymmetry = " << result.a << " +"<< result.aSigmaUp << " -" << result.aSigmaDn << "(true: " << result.aTrue << ")");
+    result.category = new std::string("toy"); //hard-coded
     results.push_back(result);
     float res = result.a - toySettings.asymmetryVirgins;
     h_residuals->Fill(res);

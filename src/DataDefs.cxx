@@ -65,6 +65,7 @@ void connectDataBranches(TTree *tree, data_t &instance, bool writing)
 void connectAnalysisOutputBranches(TTree *tree, analysisOutput_t &instance, bool writing)
 {
   if (writing) {
+    tree->Branch("category", instance.category);
     tree->Branch("a", &instance.a, "a/F");
     tree->Branch("aSigmaUp", &instance.aSigmaUp, "aSigmaUp/F");
     tree->Branch("aSigmaDn", &instance.aSigmaDn, "aSigmaDn/F");
@@ -80,6 +81,7 @@ void connectAnalysisOutputBranches(TTree *tree, analysisOutput_t &instance, bool
     tree->Branch("y1Population", &instance.y1Population, "y1Population/i");
     tree->Branch("invalidMoopData", &instance.invalidMoopData, "invalidMoopData/i");
   } else {
+    tree->SetBranchAddress("category", &instance.category);
     tree->SetBranchAddress("a", &instance.a);
     tree->SetBranchAddress("aSigmaUp", &instance.aSigmaUp);
     tree->SetBranchAddress("aSigmaDn", &instance.aSigmaDn);

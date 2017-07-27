@@ -30,6 +30,7 @@ void usage() {
   std::cerr << "Analyze input TSV (filtered with macros/parseCensusCSV.R) Census data." << std::endl;
   std::cerr << "List of options:" << std::endl;
   std::cerr << " --output: Output file to store statistics" << std::endl;
+  std::cerr << " --category: Name of category to be analyzed" << std::endl;
   std::cerr << " " << std::endl;
 }
 
@@ -41,11 +42,13 @@ int main(int argc, char **argv) {
   std::cout << "Welcome to analyzeCensusData." << std::endl;
 
   std::string outputFile;
+  std::string categoryLabel("virgin");
 
   //Read command-line options
   static struct option long_options[] = {
     {"help",           no_argument, 0,  'h' },
     {"output",         required_argument, 0,  'o' },
+    {"category",       required_argument, 0,  'c' },
     {0,         0,                 0,  0 }
   };
 
@@ -62,6 +65,9 @@ int main(int argc, char **argv) {
     switch (c) {
     case 'o':
       outputFile  = optarg;
+      break;
+    case 'c':
+      categoryLabel  = optarg;
       break;
     case 'h':
       usage();
@@ -94,6 +100,7 @@ int main(int argc, char **argv) {
   std::cout << " input file: " << inputFile << std::endl;
   std::cout << " MOOP Map file: " << moopMapFile << std::endl;
   std::cout << " output file: " << outputFile << std::endl;
+  std::cout << " category: " << categoryLabel << std::endl;
   std::cout << "---------" << std::endl;
   std::cout << std::endl;
 
@@ -102,15 +109,20 @@ int main(int argc, char **argv) {
 
   //Open input file and create TTree
   TTree *tData = new TTree("data", "data");
-  tData->ReadFile(inputFile.c_str(), "id/I:address_letter/C:address_hour/I:virgin_bool/I:weightnerds/F");
+  TString fileFormat;
+  fileFormat = "id/I:address_letter/C:address_hour/I:";
+  fileFormat += categoryLabel;
+  fileFormat += "/I:";
+  fileFormat += "weightnerds/F";
+  tData->ReadFile(inputFile.c_str(), fileFormat.Data());
   int id;
   tData->SetBranchAddress("id", &id);
   char address_letter[10];
   tData->SetBranchAddress("address_letter", &address_letter);
   int address_hour;
   tData->SetBranchAddress("address_hour", &address_hour);
-  int virgin_bool;
-  tData->SetBranchAddress("virgin_bool", &virgin_bool);
+  int category_bool;
+  tData->SetBranchAddress(categoryLabel.c_str(), &category_bool);
   float weightnerds;
   tData->SetBranchAddress("weightnerds", &weightnerds);
 
@@ -136,6 +148,7 @@ int main(int argc, char **argv) {
   //Prepare results structure
   analysisOutput_t outResults;  
   TTree *outTree = new TTree("results", "Analysis results");
+  outResults.category = new std::string(categoryLabel);
   connectAnalysisOutputBranches(outTree, outResults, true); //connect branches for writing  
 
   //Analyze data
@@ -157,11 +170,8 @@ int main(int argc, char **argv) {
     pos = moopMap->getIntersectionPosition(roundStreet, radialStreet);
     if (not moopMap->isFiducial(pos))
       continue; //entry outside fiducial area
-    int nBurns;
-    if (virgin_bool == 1) nBurns = 0;
-    else nBurns = 1;
     try {
-      mca->fill(nBurns, pos);
+      mca->fill(category_bool, pos);
     } catch (int e) {
       if ((e == MoopDataAnalyzer::ERROR_INVALID_MOOP) or (e == MoopDataAnalyzer::ERROR_POS_NOT_FIDUCIAL)) {
 	//can happen in some cases, not fatal (data won't be counted

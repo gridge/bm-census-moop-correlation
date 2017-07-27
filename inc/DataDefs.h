@@ -86,6 +86,10 @@ struct toySettings_t {
 
 /// Output information from population analysis
 struct analysisOutput_t {
+
+  ///Category being analyzed
+  std::string *category;
+
   /// Asymmetry
   float a;
   ///asymmetry uncertainty

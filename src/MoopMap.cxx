@@ -459,6 +459,10 @@ MoopMap::roundStreet_t MoopMap::getRoundStreet(std::string name)
       return static_cast<roundStreet_t>(idx);
     }
   }
+  //check for known variants
+  if (name == "Esplanade") {
+    return street_Esplanade;
+  }
   return street_NRoundStreets; //not found
 }
 
