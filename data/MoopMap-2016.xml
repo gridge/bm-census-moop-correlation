@@ -6,7 +6,7 @@
   <!-- Define type and name of input file with MOOP data -->
   <Data>
     <type>picture</type>
-    <file>../data/Moop-Map_Day-9_Placement-Updated_hi-res.jpg</file>
+    <file>data/Moop-Map_Day-9_Placement-Updated_hi-res.jpg</file>
   </Data>
   <!-- Define 2 points of reference from picture to MOOP reference frame -->
   <ReferenceFrame>

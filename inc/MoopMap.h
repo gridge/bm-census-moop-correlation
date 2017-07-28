@@ -200,6 +200,24 @@ class MoopMap {
    */
   virtual std::map<int, float> getMoopAreaNearIntersection(streetIntersection_t intersection, float epsilon=1.0);
 
+  /** Use a cache file for moop area calculations.
+   * Set the file to use as cache (for input/output).
+   */
+  virtual void setMoopAreaCache(std::string cacheFile="moopAreaCache.root");
+
+ protected:
+  /** Save MOOP area to cache file.
+   * Store moop area cache (if filled) and fiducial region (for cache validation) into a file.
+   */
+  virtual void saveMoopAreaToCache();
+
+  /** Restore MOOP area from cache file.
+   * Note: no versioning of the moop map is available at this time, so the cache file
+   *       neeeds to be used with caution if using multiple moop maps.
+   */
+  virtual void loadMoopAreaFromCache();
+
+ public:
 
 
   // Set simple fiducial regions
@@ -284,6 +302,9 @@ class MoopMap {
 
   /// Cache for areas near intersection
   std::map<streetIntersection_t, std::map<int, float>> m_cacheAreasNearIntersection;
+
+  //File name for cache file
+  std::string m_moopAreaCacheFile;
 
   //Root dictionary
   ClassDef(MoopMap, 1)

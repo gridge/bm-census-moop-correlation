@@ -17,7 +17,9 @@ parseCensusCSV <- function(inputFile, outputFile='', yCatLabel='virgin', yCat0Va
     print('Extracing statistics')
     listOfStreets <- c('Esplanade', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L')
     nEntries <- nrow(censusTable[,])
-    validEntries <- (!is.na(censusTable$weightnerds) & censusTable[,'address_letter'] %in% listOfStreets & !is.na(censusTable[,'address_hour']))
+    validEntries <- ( !is.na(censusTable$weightnerds) & censusTable[,'address_letter'] %in% listOfStreets &
+                      !is.na(censusTable[,'address_hour']) & (censusTable[,yCatLabel] != '') &
+                      !(censusTable[,yCatLabel] %in% yCatExclude) )
     nValidEntries <- nrow(censusTable[validEntries,])
 
     yCat0Entries <- (censusTable[,yCatLabel] %in% yCat0Values & validEntries)
@@ -36,7 +38,7 @@ parseCensusCSV <- function(inputFile, outputFile='', yCatLabel='virgin', yCat0Va
     # Save data to a file easily readable in ROOT
     if (! outputFile == '') {
         print(paste0('Saving filtered table to file ', outputFile))
-        censusTable[,yCatLabel] <- ifelse(censusTable[,yCatLabel] %in% yCat0Values, 1, 0)
+        censusTable[,yCatLabel] <- ifelse(censusTable[,yCatLabel] %in% yCat0Values, 0, 1)
         interestingDataCols <- c('id', 'address_letter', 'address_hour', yCatLabel, 'weightnerds')
         outTable <- censusTable[validEntries,interestingDataCols]
         write.table(outTable, file=outputFile, sep='\t', row.names=FALSE, quote=FALSE)

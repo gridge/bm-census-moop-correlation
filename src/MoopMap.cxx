@@ -9,6 +9,7 @@
 
 #include "TMath.h"
 #include "TString.h"
+#include "TFile.h"
 
 //uncomment for DEBUG of this specific class
 //#define DEBUG_BUILD
@@ -203,6 +204,33 @@ std::map<int, float> MoopMap::getMoopArea(TVector2 pos, float radius, float epsi
     }
   }
   return areas;
+}
+
+void MoopMap::setMoopAreaCache(std::string cacheFile)
+{
+  m_moopAreaCacheFile = cacheFile;
+}
+
+void MoopMap::loadMoopAreaFromCache()
+{
+
+}
+
+void MoopMap::saveMoopAreaToCache()
+{
+  /*
+  if (m_moopAreaCacheFile.empty()) return; //no cache file specified
+  TFile *cacheFile = TFile::Open(m_moopAreaCacheFile);
+  if (not cacheFile) {
+    DBG("Cannot open cache file, maybe it exists already?");
+    return;
+  }
+  TTree *treeCache = new TTree("moopCache", "MOOP map area cache");
+  //#TODO: need to move these to pointers!!
+  //       and create dictionary for m_cacheAreasNearIntersection
+  tree->Branch("moopArea", m_moopAreaCached);
+  tree->Branch("moopAreaNearIntersections", m_cacheAreasNearIntersection);
+  */
 }
 
 

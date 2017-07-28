@@ -155,7 +155,7 @@ int main(int argc, char **argv) {
   std::cout << "Analyzing data" << std::endl;
   Long64_t nEntries = tData->GetEntries();
   for (int iEntry=0; iEntry < nEntries; ++iEntry) {
-    if ((iEntry % 1000 == 0) && (iEntry > 0))
+    if ((iEntry % 10000 == 0) && (iEntry > 0))
       std::cout << "Processed " << iEntry << " entries." << std::endl;
     if (tData->GetEntry(iEntry) < 0) break;
     //prepare data
@@ -183,7 +183,7 @@ int main(int argc, char **argv) {
     }
   }
 
-  std::cout << "Finished analyzing data." << std::endl;
+  DBG("Finished analyzing data.");
   outResults = mca->getResults();  
 
   //display results
