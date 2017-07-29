@@ -11,6 +11,13 @@
 # A filtering of events based on valid streets for analysis as well as valid entries and weight is performed.
 #
 parseCensusCSV <- function(inputFile, outputFile='', yCatLabel='virgin', yCat0Values=c("yes"), yCatExclude=c()) {
+
+#    print(paste0("inputFile=", inputFile))
+#    print(paste0("outputFile=", outputFile))
+#    print(paste0("category=",yCatLabel))
+#    print(paste0("yCat0Values=",yCat0Values))
+#    print(paste0("yCatExclude=",yCatExclude))
+
     print('Loading input file')
     censusTable <- read.csv(inputFile, header=TRUE)
 
@@ -33,7 +40,7 @@ parseCensusCSV <- function(inputFile, outputFile='', yCatLabel='virgin', yCat0Va
     print('Statistics:')
     print(paste(' Total entries: ', nEntries))
     print(paste(' Valid entries: ', nValidEntries, '(', nValidEntries / nEntries * 100, '%)'))
-    print(paste(' Fraction of ', yCatLabel, ' in [', yCat0Values, '] excluding [', yCatExclude, '] (weighted):', fracYCat0, ' (', fracYCat0Weights, ')'))
+    print(paste(' Fraction of ', yCatLabel, ' in [', paste(yCat0Values, collapse=" "), '] excluding [', paste(yCatExclude, collapse=" "), '] (weighted):', fracYCat0, ' (', fracYCat0Weights, ')'))
 
     # Save data to a file easily readable in ROOT
     if (! outputFile == '') {
